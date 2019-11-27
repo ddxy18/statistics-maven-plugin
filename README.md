@@ -8,7 +8,7 @@ help you to count lines of a project's source code and test code
 
 command
 ```
-mvn counter:counter
+mvn counter:count
 ```
 <hr>
 <br>
