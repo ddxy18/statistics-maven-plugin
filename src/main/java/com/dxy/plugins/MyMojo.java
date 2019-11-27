@@ -24,7 +24,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.*;
 
-@Mojo(name = "counter", defaultPhase = LifecyclePhase.VERIFY)
+@Mojo(name = "count", defaultPhase = LifecyclePhase.VERIFY)
 public class MyMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project.build.sourceDirectory}", readonly = true)
