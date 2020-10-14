@@ -1,5 +1,3 @@
-package com.dxy.plugins;
-
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
  *
@@ -16,65 +14,75 @@ package com.dxy.plugins;
  * limitations under the License.
  */
 
+package com.dxy.plugins;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 
-@Mojo(name = "count", defaultPhase = LifecyclePhase.VERIFY)
-public class MyMojo extends AbstractMojo {
+@Mojo(name = "statistics", defaultPhase = LifecyclePhase.VERIFY)
+public class StatisticsMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project.build.sourceDirectory}", readonly = true)
     private File srcDir;
 
-    @Parameter(defaultValue = "${project.build.testSourceDirectory}", readonly = true)
-    private File testDir;
-
     public void execute() throws MojoExecutionException {
-        File srcMain = srcDir;
-        File srcTest = testDir;
-
         try {
-            System.out.println("src lines:" + countDirLines(srcMain));
-            System.out.println("test lines:" + countDirLines(srcTest));
+            System.out.println("lines:" + dirLines(srcDir));
         } catch (IOException e) {
             throw new MojoExecutionException("Error counting project lines ", e);
         }
     }
 
-    private int countDirLines(File file) throws IOException {
+    /**
+     * for a directory
+     *
+     * @param file a directory
+     * @return all lines in *.java files in a directory
+     * @throws IOException IO operations for file
+     */
+    private int dirLines(File file) throws IOException {
         if (!file.isDirectory()) {
-            return countFileLines(file);
+            return fileLines(file);
         } else {
             int lines = 0;
             File[] files = file.listFiles();
-            // 排除对空文件夹的计数
             if (files != null) {
                 for (File f : files) {
-                    lines += countDirLines(f);
+                    lines += dirLines(f);
                 }
-                return lines;
             }
-            return 0;
+            return lines;
         }
     }
 
-    /*
-     * 对非文件夹的File对象的计数
+    /**
+     * for a single java file
      *
-     * @param file 必须是非文件夹对象
+     * @param file a single java file
+     * @return lines in the file
+     * @throws IOException IO operations for file
      */
-    private int countFileLines(File file) throws IOException {
-        FileReader reader = new FileReader(file);
-        LineNumberReader lineReader = new LineNumberReader(reader);
+    private int fileLines(File file) throws IOException {
         int lines = 0;
-        while (lineReader.readLine() != null) {
-            lines++;
+
+        if (file.getName().contains(".java")) {  // must be a valid java file
+            FileReader reader = new FileReader(file);
+            LineNumberReader lineReader = new LineNumberReader(reader);
+
+            while (lineReader.readLine() != null) {
+                lines++;
+            }
+            lineReader.close();
         }
-        lineReader.close();
+
         return lines;
     }
 }

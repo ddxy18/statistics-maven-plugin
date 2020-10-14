@@ -1,29 +1,23 @@
-# counter-maven-plugin
-help you to count lines of a project's source code and test code
+# statistics-maven-plugin
+Help you to count lines of a project's source codes.
 
-- @Parameter srcDir 
-  - defaultValue = "${project.build.sourceDirectory}"
-- @Parameter testDir
-  - defaultValue = "${project.build.testSourceDirectory}" 
-
-command
+## Command
 ```
-mvn counter:count
+mvn statistics:statistics
 ```
 <hr>
 <br>
 
-1. download the project and use command `mvn clean install`
-to install the plugin to your local maven repository
-
-2. add the below plugin to your pom
+## Getting started
+1. Download the project `https://github.com/ddxy18/counter-maven-plugin.git`.
+2. Use command `mvn clean install` to install the plugin to your local
+ maven repository.
+3. Add the below code to your pom.xml file
 ```
 <plugin>
     <groupId>com.dxy.plugins</groupId>
-    <artifactId>counter-maven-plugin</artifactId>
+    <artifactId>statistics-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
 </plugin>
 ```
-
-3. use command `mvn clean install` and the console will print the line information
 
