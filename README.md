@@ -1,6 +1,10 @@
 # statistics-maven-plugin
 Help you to count lines of a project's source codes.
 
+## Feature
+- lines statistics(including total lines, comment lines and code lines)
+- calculate how many java files
+
 ## Command
 ```
 mvn statistics:statistics
